@@ -1,0 +1,52 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <title>Flask-SocketIO Test</title>
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"
+        integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"
+        integrity="sha256-yr4fRk/GU1ehYJPAs8P4JlTgu0Hdsp4ZKrx8bDEDC3I=" crossorigin="anonymous"></script>
+    <script type="text/javascript" charset="utf-8">
+        $(document).ready(function () {
+            var socket = io();
+            socket.on('connect', function () {
+                console.log('connected')
+            });
+
+            function appendJsonObjects(objects) {
+                let stringVal = "";
+                objects.forEach(element => {
+                    let objectJson = JSON.stringify(element, undefined, 2);
+                    stringVal += "\n";
+                    stringVal += objectJson;
+                });
+
+                return stringVal;
+            }
+
+            socket.on('powerplant-post', function (msg) {
+                console.log(msg);
+                let totalVal = "POST data";
+                totalVal += "\n";
+                totalVal += JSON.stringify(msg.received);
+                totalVal += "\n";
+                totalVal += "Calculated data";
+                totalVal += "\n";
+                jsonObjects = JSON.parse(msg.calculated);
+                totalVal += appendJsonObjects(jsonObjects);
+                $('#log').val(totalVal)
+
+            });
+
+        });
+    </script>
+</head>
+
+<body>
+    <h1>WS Test</h1>
+    <h2>Data received and returned:</h2>
+    <textarea name="log" id="log" cols="100" rows="50"></textarea>
+</body>
+
+</html>

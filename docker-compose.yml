@@ -1,0 +1,18 @@
+version: '3'
+
+services:
+  web:
+    build: .
+    ports:
+      - "5000:5000"
+    volumes:
+      - .:/code
+    environment: 
+      - FLASP_APP=app.py
+      - FLASK_ENV=development
+    networks:
+      - powerplant 
+
+networks:
+  powerplant:
+    driver: bridge
